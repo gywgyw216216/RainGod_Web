@@ -41,6 +41,8 @@ The Full Project Includes ——
 
 ### The Project is Deployed in the Alibaba Cloud Elastic Compute Service(ECS), and the OS is Ubuntu 20.04.1 LTS (GNU/Linux 5.4.0-65-generic x86_64). 
 
+#### To be Honest, the Project Can Be Optimized Massively. 
+
 Thanks for My Friends' Helps. 
 Yuxin Wang Help Design UI and Design Images; 
 Dexter Cai and Hyneman Kan Give Me Technical Direction. 
