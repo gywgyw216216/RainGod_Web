@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>雨师</title>
+    <link rel="shortcut icon" href="../static/images/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="../static/images/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../static/css/index.css" type="text/css">
+    <script src="../static/js/jquery-3.6.0.min.js" type="text/javascript" charset="UTF-8"></script>
+</head>
+<body>
+<h1>雨师气象数据可视化</h1>
+<hr>
+<div id="index">
+    <script>
+        const divElement = document.getElementById('index');
+
+        for(let i = 0; i < 8; i++) // 向<div>内添加多个<br>
+        {
+            const brTarget = document.createElement('br');
+
+            divElement.appendChild(brTarget);
+        }
+    </script>
+    <p id="select">请选择要查询天气情况的省份和城市：</p>
+    <label>
+        <select id="province" onchange="change()">
+            {% for province in provinces %}
+                <option value="{{ province }}">{{ province }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <script>
+        document.getElementById('province').selectedIndex = -1; // 初始化省份下拉框索引为-1，不选择任何省份
+    </script>
+    <label>
+        <select id="city"></select>
+    </label>
+    <br><br>
+    <button id="ok" type="submit" value="ok" onclick="submit()">确定</button>
+    <a id="jump" onclick="jump()">
+        <button type="submit" value="jump">前往</button>
+    </a>
+</div>
+<hr>
+<div>
+    <p id="copyright">© Copyright 2021-2022&nbsp;&nbsp;&nbsp;raingod.icu&nbsp;&nbsp;&nbsp;All Rights Reserved. 版权所有</p>
+    <a id="ICP" href="https://beian.miit.gov.cn/" target="_blank">沪ICP备2021010937号-1</a>
+</div>
+</body>
+<script type="text/javascript">
+    let buttonCheck = false;
+
+
+
+    function change()
+    {
+        // 获取省份下拉框选择的索引和值
+        const selectProvince = document.getElementById('province');
+        const indexProvince = selectProvince.selectedIndex;
+        const optionProvince = selectProvince.options[indexProvince].value;
+
+        {% for city in cities %}
+            {% for city_key,city_value in city.items() %}
+                var cityKey = "{{ city_key }}";
+                var cityValue = [];
+
+                {% for city_item in city_value %}
+                    cityValue.push("{{ city_item }}");
+                {% endfor %}
+
+                if(optionProvince === cityKey) {# 向城市下拉框动态添加城市 #}
+                {
+                    document.getElementById('city').options.length = 0;
+
+                    const selectCity = document.getElementById('city');
+
+                    for(let i = 0; i < cityValue.length; i++)
+                        selectCity.options.add(new Option(cityValue[i], cityValue[i]));
+                }
+            {% endfor %}
+        {% endfor %}
+
+        document.getElementById('city').selectedIndex = -1; // 初始化城市下拉框索引为-1，不选择任何城市
+    }
+
+
+
+    function submit()
+    {
+        const selectProvince = document.getElementById('province');
+        const indexProvince = selectProvince.selectedIndex;
+        const optionProvince = selectProvince.options[indexProvince].value;
+        const selectCity = document.getElementById('city');
+        const indexCity = selectCity.selectedIndex;
+
+        if(indexCity === -1)
+            alert('请选择要查询天气情况的省份和城市！');
+        else
+        {
+            const optionCity = selectCity.options[indexCity].value;
+            buttonCheck = true;
+
+            $.ajax({ // 使用jQuery的Ajax技术进行异步刷新和数据交互
+                       url: '/deal/',
+                       type: 'GET',
+                       data: {'province': optionProvince, 'city': optionCity},
+                       dataType: 'json',
+                       success: function(data)
+                       {
+                           window.location.href = 'weather';
+                       }
+                   });
+        }
+    }
+
+
+
+    function jump()
+    {
+        const selectProvince = document.getElementById('province');
+        const indexProvince = selectProvince.selectedIndex;
+        const optionProvince = selectProvince.options[indexProvince].value;
+        const selectCity = document.getElementById('city');
+        const indexCity = selectCity.selectedIndex;
+
+        if(indexCity === -1)
+            alert('请选择要查询天气情况的省份和城市！');
+        else
+        {
+            if(buttonCheck)
+            {
+                const optionCity = selectCity.options[indexCity].value;
+
+                document.getElementById('jump').setAttribute('href', '/weather/?province=' + optionProvince + '&city=' + optionCity);// 向<a>添加href属性
+                buttonCheck = false;
+            }
+            else
+                alert('请先确定好选择要查询天气情况的省份和城市后再点击！');
+        }
+    }
+</script>
+</html>
