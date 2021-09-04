@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>雨师——{{ province }}：{{ city }}</title>
+    <link rel="shortcut icon" href="../static/images/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="../static/images/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../static/css/weather.css" type="text/css">
+    <script src="../static/js/jquery-3.6.0.min.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="../static/js/echarts.min.js" type="text/javascript" charset="UTF-8"></script>
+</head>
+<body>
+<h1>雨师气象数据可视化</h1>
+<hr>
+<h2>{{ province }}：{{ city }}</h2>
+<div>
+    <div>
+        <table>
+            <tr>
+                <td>更新时间：</td>
+                <td>{{ real_time_weather[0]['publish_time'] }}</td>
+            </tr>
+            <tr>
+                <td>气温：</td>
+                <td>{{ real_time_weather[0]['temperature'] }}</td>
+            </tr>
+            <tr>
+                <td>降水量：</td>
+                <td>{{ real_time_weather[0]['precipitation'] }}</td>
+            </tr>
+            <tr>
+                <td>风向：</td>
+                <td>{{ real_time_weather[0]['wind_direction'] }}</td>
+            </tr>
+            <tr>
+                <td>风力：</td>
+                <td>{{ real_time_weather[0]['wind_power'] }}</td>
+            </tr>
+            <tr>
+                <td>相对湿度：</td>
+                <td>{{ real_time_weather[0]['relative_humidity'] }}</td>
+            </tr>
+            <tr>
+                <td>体感温度：</td>
+                <td>{{ real_time_weather[0]['sensible_temperature'] }}</td>
+            </tr>
+            <tr id="aqi">
+                <td>空气质量：</td>
+                <!-- 向tr标签内添加td元素 -->
+                <script type="text/javascript">
+                    const aqi = "{{ real_time_weather[0]['aqi'] }}";
+                    const trElementAqi = document.getElementById('aqi');
+                    const tdTargetAqi = document.createElement('td');
+
+                    if(aqi === '-')
+                    {
+                        tdTargetAqi.innerHTML = aqi;
+                        trElementAqi.appendChild(tdTargetAqi);
+                    }
+                    else
+                    {
+                        tdTargetAqi.innerHTML = aqi.slice(5);
+                        trElementAqi.appendChild(tdTargetAqi);
+                    }
+                </script>
+            </tr>
+            <tr id="comfort">
+                <td>舒适度：</td>
+                <!-- 向tr标签内添加td元素 -->
+                <script type="text/javascript">
+                    const comfort = "{{ real_time_weather[0]['comfort'] }}";
+                    const trElementComfort = document.getElementById('comfort');
+                    const tdTargetComfort = document.createElement('td');
+
+                    if(comfort === '-')
+                    {
+                        tdTargetComfort.innerHTML = comfort;
+                        trElementComfort.appendChild(tdTargetComfort);
+                    }
+                    else
+                    {
+                        tdTargetComfort.innerHTML = comfort.slice(4);
+                        trElementComfort.appendChild(tdTargetComfort);
+                    }
+                </script>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <hr>
+    <br>
+    <div id="raingod"></div>
+    <script type="text/javascript">
+        let date = []; // 横轴日期数组
+        let highestTemperature = []; // 最高温度数组
+        let lowestTemperature = []; // 最低温度数组
+
+        // 循环遍历日期天气列表，向数组添加元素
+        {% for date_weather in date_weathers %}
+            date.push("{{ date_weather['date_time'] }}");
+
+            {% if date_weather["highest_temperature"]=="-" %}
+                highestTemperature.push(null);
+            {% else %}
+                highestTemperature.push(parseFloat("{{ date_weather['highest_temperature'] }}".slice(0, -1)));
+            {% endif %}
+
+            {% if date_weather["lowest_temperature"]=="-" %}
+                lowestTemperature.push(null);
+            {% else %}
+                lowestTemperature.push(parseFloat("{{ date_weather['lowest_temperature'] }}".slice(0, -1)));
+            {% endif %}
+        {% endfor %}
+
+        // 对最高温度数组和最低温度数组进行处理
+        let highTemp = [];
+
+        if(highestTemperature[0] === null)
+            highTemp = highestTemperature.slice(1);
+        else
+            highTemp = highestTemperature;
+
+        let lowTemp = [];
+
+        if(lowestTemperature[0] === null)
+            lowTemp = lowestTemperature.slice(1);
+        else
+            lowTemp = lowestTemperature;
+
+        // 获取纵轴刻度范围
+        let temp = highTemp.concat(lowTemp);
+        const minimumTemp = temp.sort()[0];
+        const maximumTemp = temp.reverse()[0];
+
+        let seriesData1 = []; // Echarts图表系列1
+        let seriesData2 = []; // Echarts图表系列2
+
+        // 循环遍历date列表，向Echarts系列添加元素
+        for(let i = 0; i < date.length; i++)
+        {
+            seriesData1.push([date[i], highestTemperature[i]]);
+            seriesData2.push([date[i], lowestTemperature[i]]);
+        }
+
+        const raingod = echarts.init(document.getElementById("raingod")); // 初始化Echarts对象
+        // 设置Echarts图表选项
+        const option = {
+            title: {text: "{{ province }}" + "{{ city }}" + "7天天气预报", right: 400},
+            toolbox: {
+                show: true, orient: "horizontal", showTitle: true, feature: {
+                    dataView: {
+                        show: true
+                    },
+                    restore: {
+                        show: true
+                    },
+                    dataZoom: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    },
+                    magicType: {
+                        type: ["bar", "line"]
+                    }
+                }, right: 75, top: 25
+            },
+            tooltip: {
+                trigger: "axis",
+                triggerOn: "mousemove|click",
+                axisPointer: {show: true, animation: true, type: "cross"}
+            },
+            legend: {
+                orient: "horizontal",
+                left: 150,
+                top: 27.5,
+                data: [{name: "最高温度"}, {name: "最低温度"}]
+            },
+            xAxis: {name: "日期", data: date},
+            yAxis: {
+                name: "温度(°C)",
+                min: minimumTemp - 1,
+                max: maximumTemp + 2,
+                splitNumber: maximumTemp - minimumTemp + 3,
+                splitLine: {show: false},
+                axisLine: {show: true},
+                axisTick: {show: true}
+            },
+            series: [
+                {
+                    name: "最高温度",
+                    type: "line",
+                    data: seriesData1,
+                    smooth: true,
+                    itemStyle: {color: "red"}
+                },
+                {
+                    name: "最低温度",
+                    type: "line",
+                    data: seriesData2,
+                    smooth: true,
+                    itemStyle: {color: "blue"}
+                }
+            ]
+        };
+
+        raingod.setOption(option); // 应用Echarts选项到Echarts对象，进行Echarts可视化图表渲染
+    </script>
+</div>
+<p id="return">
+    <a href="/">
+        <button type="button" value="return">返回</button>
+    </a>
+</p>
+<hr>
+<div>
+    <p id="copyright">© Copyright 2021-2022&nbsp;&nbsp;&nbsp;raingod.icu&nbsp;&nbsp;&nbsp;All Rights Reserved. 版权所有</p>
+    <a id="ICP" href="https://beian.miit.gov.cn/" target="_blank">沪ICP备2021010937号-1</a>
+</div>
+</body>
+</html>
