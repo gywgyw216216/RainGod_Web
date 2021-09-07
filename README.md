@@ -4,6 +4,8 @@
 
 ## You Can Visit: www.raingod.icu
 
+### It's Based on Project [RainGod_GUI](https://github.com/gywgyw216216/RainGod_GUI). 
+
 Notice:
 
 The Full Project Includes ——
