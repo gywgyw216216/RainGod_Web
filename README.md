@@ -4,9 +4,9 @@
 
 ## You Can Visit: www.raingod.icu
 
-### It's Based on Project [RainGod_GUI](https://github.com/gywgyw216216/RainGod_GUI). 
+### It's Based on Project [RainGod_GUI](https://github.com/gywgyw216216/RainGod_GUI/). 
 
-Notice:
+Notice: 
 
 The Full Project Includes ——
 
@@ -16,7 +16,7 @@ The Full Project Includes ——
 
 ### Project Development Environment
 
-1. Python: Python 3.9.4 ×64 (Anaconda 3 ×64 2020.7，conda 4.9.2). To be Honest, Use JetBrains PyCharm Professional + Anaconda 3 Virtual Environment(Default, Latest). 
+1. Python: Python 3.9.4 ×64 (Anaconda 3 ×64 2020.7, conda 4.9.2). To be Honest, Use JetBrains PyCharm Professional + Anaconda 3 Virtual Environment(Default, Latest). 
 2. MySQL: MySQL 8.0.21 ×64 Community Server. To be Honest, "apt install mysql-server" and "apt install mysql-client" on the Linux Ubuntu Server(Default, Latest). 
 3. ECharts: ECharts 5.0.2 (echarts.min.js). 
 4. jQuery: jQuery 3.6.0 (jquery-3.6.0min.js). 
