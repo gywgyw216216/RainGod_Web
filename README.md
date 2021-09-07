@@ -1,6 +1,6 @@
-# RainGod
+# RainGod_Web
 
-## SUES CS Graduation Project. Crawling and Visualization of Meteorological Data System Based on Python(Weather Website). 
+## SUES CS Graduation Project. Crawling and Visualization of Meteorological Data System Based on Python. 
 
 ## You Can Visit: www.raingod.icu
 
