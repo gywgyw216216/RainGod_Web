@@ -48,7 +48,7 @@ The Full Project Includes ——
 #### To be Honest, the Project Can Be Optimized Massively. 
 
 Thanks for My Friends' Helps. 
-Yuxin Wang Help Design UI and Design Images; 
+Yuxin Wang Helps to Design UI and Design Images; 
 Dexter Cai and Hyneman Kan Give Me Technical Direction. 
 Thank Other Friends More Or Less for Their Help. 
 
