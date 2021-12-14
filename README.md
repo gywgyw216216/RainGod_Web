@@ -49,7 +49,7 @@ The Full Project Includes ——
 
 Thanks for My Friends' Helps. 
 Yuxin Wang Helps to Design UI and Design Images; 
-Dexter Cai and Hyneman Kan Give Me Technical Direction. 
+[Dexter Cai](https://github.com/dextercai) and Hyneman Kan Give Me Technical Direction. 
 Thank Other Friends More Or Less for Their Help. 
 
 And Thanks to My Mentor. 
