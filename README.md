@@ -12,7 +12,7 @@ The Full Project Includes ——
 
 1. Directory ./resources/ , Which Contains Firefox Webdriver "geckodriver" and Chrome Webdriver "chromedriver" for Windows x64 and Linux x64; 
 2. Directory ./static/images/ , Which Contains Background Image "background.png" for the Website and Website Favicon "favicon.ico"; 
-3. Configuration Files "default" and "nginx.conf", "default" is in /etc/nginx/sites-available/ , and "nginx.conf" is in /etc/nginx/ .
+3. Configuration Files "default" and "nginx.conf", "default" is in /etc/nginx/sites-available/ , and "nginx.conf" is in /etc/nginx/ . The Configuration Includes HTTPS and SSL Certification, so You Must Have Them, They are in /etc/nginx/cert/ .
 
 ### Project Development Environment
 
